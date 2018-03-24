@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS Broker
 	state VARCHAR(),
 	zip_code INTEGER,
 	email VARCHAR(),
-	bill_via_email VARCHAR()
+	bill_via_email VARCHAR(),
+	PRIMARY KEY (company_name)
 );
 
 CREATE TABLE IF NOT EXISTS Invoices
@@ -21,5 +22,5 @@ CREATE TABLE IF NOT EXISTS Invoices
 	amount DOUBLE,
 	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	broker VARCHAR,
-	FOREIGN KEY ()
+	FOREIGN KEY (broker) REFERENCES Broker(company_name)
 );
