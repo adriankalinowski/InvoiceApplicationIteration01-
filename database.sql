@@ -4,24 +4,24 @@ CREATE TABLE IF NOT EXISTS Broker
 (
 	broker_id INTEGER AUTO_INCREMENT,
 	company_name VARCHAR(200),
-	address VARCHAR(),
-	city VARCHAR(),
-	state VARCHAR(),
+	address VARCHAR(256),
+	city VARCHAR(256),
+	state VARCHAR(2),
 	zip_code INTEGER,
-	email VARCHAR(),
-	bill_via_email VARCHAR(),
+	email VARCHAR(256),
+	bill_via_email BOOLEAN,
 	PRIMARY KEY (broker_id)
 );
 
 CREATE TABLE IF NOT EXISTS Invoices
 (
 	invoice_id INTEGER AUTO_INCREMENT,
-	shipped_from_city VARCHAR(),
-	shipped_from_state VARCHAR(),
-	shipped_to_city VARCHAR(),
-	shipped_to_state VARCHAR(),
+	shipped_from_city VARCHAR(256),
+	shipped_from_state VARCHAR(256),
+	shipped_to_city VARCHAR(256),
+	shipped_to_state VARCHAR(256),
 	amount DOUBLE,
-	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (invoice_id)
 );
 

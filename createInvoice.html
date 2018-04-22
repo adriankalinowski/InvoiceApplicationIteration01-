@@ -27,43 +27,29 @@
 	</nav>
 
 	<br><br>
-	<h2 class="text-center">Invoices</h2>
-	<table class="table table-striped">
-	    <thead>
-	      <tr>
-	        <th>Invoice</th>
-	        <th>Broker</th>
-	        <th>Amount</th>
-	        <th>Date Billed</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr>
-	        <td>0001</td>
-	        <td>TQL</td>
-	        <td>$1,200</td>
-	        <td>4/5/2018</td>
-	      </tr>      
-	      <tr class="warning">
-	        <td>0002</td>
-	        <td>PLS</td>
-	        <td>$1,000</td>
-	        <td>3/7/2018</td>
-	      </tr>
-	      <tr class="danger">
-	        <td>0003</td>
-	        <td>Broker Logistics</td>
-	        <td>$2,000</td>
-	        <td>2/1/2018</td>
-	      </tr>
-	      <tr>
-	        <td>0004</td>
-	        <td>Broker Logistics</td>
-	        <td>$2,000</td>
-	        <td>2/1/2018</td>
-	      </tr>
-	    </tbody>
-  	</table>
+    
+    
+     <form method="post" action="mailto:Adrian@Kalinowski.com" enctype="text/plain">
+        <h3>Shipped From:</h3>
+         
+        <label for="shippedFromCity">City:</label>
+		<input type="text" name="myFName" required>
+         <br><br>
+        <label for="shippedFromState">State:</label>
+        <input type="text" name="myLName" required>
+
+        <h3>Shipped To:</h3>
+        <label for="shippedToCity">City:</label>
+        <input type="email" name="myEmail" required>
+         <br><br>
+        <label for="shippedToState">State:</label>
+        <input type="tel" name="myPhone">
+
+		<br><br><br>
+		<input type="submit" id="mySubmit">
+        
+    </form>
+
 </div>
   </body>
 </html>
