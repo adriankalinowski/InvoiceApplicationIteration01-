@@ -29,24 +29,29 @@
 	<br><br>
     
     
-     <form method="post" action="mailto:Adrian@Kalinowski.com" enctype="text/plain">
+     <form method="post" action="createInvoice.php" enctype="text/plain">
         <h3>Shipped From:</h3>
          
-        <label for="shippedFromCity">City:</label>
-		<input type="text" name="myFName" required>
+        <label for="FromCity">City:</label>
+		<input type="text" name="FromCity" required>
          <br><br>
-        <label for="shippedFromState">State:</label>
-        <input type="text" name="myLName" required>
+        <label for="FromState">State:</label>
+        <input type="text" name="FromState" required>
 
         <h3>Shipped To:</h3>
-        <label for="shippedToCity">City:</label>
-        <input type="email" name="myEmail" required>
+        <label for="ToCity">City:</label>
+        <input type="text" name="ToCity" required>
          <br><br>
-        <label for="shippedToState">State:</label>
-        <input type="tel" name="myPhone">
+        <label for="ToState">State:</label>
+        <input type="text" name="ToState">
+
+
+        <h3>Amount:</h3>
+        <label for="amount">State:</label>
+        <input type="number" name="amount">
 
 		<br><br><br>
-		<input type="submit" id="mySubmit">
+		<input type="submit">
         
     </form>
 
