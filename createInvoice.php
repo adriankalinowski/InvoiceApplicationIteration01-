@@ -9,16 +9,27 @@ if($conn){
     die("Server not connected");
 }
 
-/*
-$sql = "INSERT INTO Invoices (shipped_from_city, shipped_from_state, shipped_to_city, shipped_to_state, amount) VALUES (?,?,?,?,?)";
 
-$stmt = mysqli_prepare($sql);
-$stmt->bind_param("ssssd",$_POST['fromCity'],$_POST['fromState'],$_POST['toCity'],$_POST['toState'],$_POST['amount']);
+$sql = "INSERT INTO Invoices (reference_number, shipped_from_city, shipped_from_state, shipped_to_city, shipped_to_state, amount) VALUES (?,?,?,?,?,?)";
+
+$stmt = mysqli_prepare($conn, $sql);
+$stmt->bind_param("sssssd",$_POST['reference'],$_POST['fromCity'],$_POST['fromState'],$_POST['toCity'],$_POST['toState'],$_POST['amount']);
 $stmt->execute();
 
 $invoiceId = mysqli_insert_id($conn);
+$result = $conn->query("SELECT creation_time FROM invoices WHERE invoice_id='$invoiceId'");
+$row = mysqli_fetch_row($result);
+$date = date_create($row[0]->creation_time);
 $stmt->close();
 
+if($_POST['brokerId'] == null){
+    //echo "ADRIAN";
+}else {
+    $brokerName = $_POST['brokerId'];
+    $result = $conn->query("SELECT * FROM broker WHERE company_name='$brokerName'");
+}
+
+/*
 if($_POST['broker'] == 'Add New'){
     $sql = "INSERT INTO Broker (company_name, address, city, state, zip_code, email, bill_via_email) VALUES (?,?,?,?,?,?,?)";
 
@@ -35,8 +46,8 @@ $stmt = mysqli_prepare($sql);
 $stmt->bind_param("ii",$invoiceId, $brokerId);
 $stmt->execute();
 
-$stmt->close();
-$conn->close();*/
+$stmt->close();*/
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +78,7 @@ $conn->close();*/
             <div class="navbar-collapse collapse show" id="navbarColor02" style="">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="createInvoice.html">Create Invoice</a>
@@ -86,68 +97,62 @@ $conn->close();*/
             </div>
         </nav>
 
-
-        <div class="page-header">
-            <div class="pull-left">
+        <br>
+        <div class="row pb-2 mt-4 mb-2 border-bottom">
+            <div class="col-md-8 mb-3">
                 <h2>Kali Enterprises</h2>
-                <h6>
                     42275 June Drive <br>
-                    Sterling Heights, MI 48314
-                </h6>
-                <h6>
-                    Phone: (586) 344-6945 <br>
-                    Email: kalienterpriseinc@gmail.com
-                </h6>
+                    Sterling Heights, MI 48314 <br>
+                    <b>Phone:</b> (586) 344-6945 <br>
+                    <b>Email:</b> kalienterpriseinc@gmail.com
             </div>
-            <div class="pull-right">
+            <div class="col-md-4 mb-3">
                 <h2 class="text-right">INVOICE</h2>
                 <h6 class="text-right">
-                    Invoice #:
+                    <b>Invoice #:</b>
                     <?php
-                        echo "####"
+                    echo sprintf("%'.05d\n", $invoiceId);
                     ?>
                     <br>
-                    Date:
+                    <b>Date:</b>
                     <?php
-                        echo "##/##/####"
+                    echo date_format($date, 'm-d-Y');
                     ?>
-                </h6>
-                <h6 class="text-right"></h6>
             </div>
-            <div class="clearfix"></div>
         </div>
 
-        <h4>
+        <br>
+        <h3>
             Reference #:
             <?php
                 echo $_POST['reference'];
             ?>
-        </h4>
+        </h3>
 
         <br>
 
         <h4>Shipped From:</h4>
         <?php
-            echo $_POST['fromCity'] . ", " . $_POST['fromState'];
+            echo strtoupper($_POST['fromCity']) . ", " . strtoupper($_POST['fromState']);
         ?>
 
         <br><br>
 
         <h4>Shipped To:</h4>
         <?php
-            echo $_POST['toCity'] . ", " . $_POST['toState'];
+            echo strtoupper($_POST['toCity']) . ", " . strtoupper($_POST['toState']);
         ?>
 
-        <br><br>
+        <br><br><br>
 
         <h4>
             Amount Due:
             <?php
-                echo "$" . $_POST['amount'];
+                echo "$" . money_format('%i', $_POST['amount']);
             ?>
         </h4>
 
-        <br><br><br>
+        <br><br>
 
         <h4>Remit Payment To:</h4>
         <p>

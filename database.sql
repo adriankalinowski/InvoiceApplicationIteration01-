@@ -16,12 +16,13 @@ CREATE TABLE IF NOT EXISTS broker
 CREATE TABLE IF NOT EXISTS invoices
 (
 	invoice_id INTEGER AUTO_INCREMENT,
+	reference_number VARCHAR(256),
 	shipped_from_city VARCHAR(256),
 	shipped_from_state VARCHAR(256),
 	shipped_to_city VARCHAR(256),
 	shipped_to_state VARCHAR(256),
 	amount DOUBLE,
-	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (invoice_id)
 );
 
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS invoice_broker
 (
 	invoice_id INTEGER,
 	broker_id INTEGER,
+	UNIQUE (invoice_id, broker_id),
 	FOREIGN KEY (invoice_id) REFERENCES Invoices(invoice_id),
 	FOREIGN KEY (broker_id) REFERENCES Broker(broker_id)
 );
