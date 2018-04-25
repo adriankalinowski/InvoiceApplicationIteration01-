@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS InvoiceApplication;
 
-CREATE TABLE IF NOT EXISTS Broker
+CREATE TABLE IF NOT EXISTS broker
 (
 	broker_id INTEGER AUTO_INCREMENT,
 	company_name VARCHAR(200),
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Broker
 	PRIMARY KEY (broker_id)
 );
 
-CREATE TABLE IF NOT EXISTS Invoices
+CREATE TABLE IF NOT EXISTS invoices
 (
 	invoice_id INTEGER AUTO_INCREMENT,
 	shipped_from_city VARCHAR(256),
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Invoices
 	PRIMARY KEY (invoice_id)
 );
 
-CREATE TABLE IF NOT EXISTS Invoice_Broker
+CREATE TABLE IF NOT EXISTS invoice_broker
 (
 	invoice_id INTEGER,
 	broker_id INTEGER,
