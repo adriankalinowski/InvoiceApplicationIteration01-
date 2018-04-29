@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS broker
 	zip_code INTEGER,
 	email VARCHAR(256),
 	bill_via_email BOOLEAN,
-	PRIMARY KEY (broker_id)
+	PRIMARY KEY (broker_id, company_name),
+	UNIQUE (company_name)
 );
 
 CREATE TABLE IF NOT EXISTS invoices
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS invoices
 	shipped_to_state VARCHAR(256),
 	amount DOUBLE,
 	creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	paid_time TIMESTAMP DEFAULT NULL,
 	PRIMARY KEY (invoice_id)
 );
 
