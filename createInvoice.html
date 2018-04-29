@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <link rel="stylesheet" href="styleSheet.css" type="text/css">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
@@ -43,12 +44,14 @@
                   ' </div>' +
                   ' <div class="col-md-6 mb-3">' +
                   '     <label for="brokerState">Bill via Email?</label>' +
-                  '     <select class="custom-select d-block w-100" id="brokerViaEmail" name="brokerViaEmail" required>' +
+                  '     <select class="custom-select d-block w-100" onchange="myFunction(this.value)" id="brokerViaEmail" name="brokerViaEmail" required>' +
                   '         <option value="">Yes or No</option>' +
-                  '         <option>Yes</option>' +
-                  '         <option>No</option>' +
+                  '         <option value="Yes">Yes</option>' +
+                  '         <option value="No">No</option>' +
                   '     </select>' +
                   ' </div>' +
+                  '</div>' +
+                  '<div class="row" id="brokerAddition"' +
                   '</div>'
               ;
 
@@ -58,8 +61,17 @@
                       count++;
                   }
               });
+
+
+
           });
 
+      </script>
+      <script>
+          function myFunction(val) {
+              //alert(val);
+              document.getElementById("brokerAddition").innerText = "Hello";
+          }
       </script>
 
   </head>
@@ -67,7 +79,7 @@
     <br>
 <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="home.html">Kali Enterprises Inc</a>
+            <a class="navbar-brand" href="index.php">Kali Enterprises Inc</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -98,8 +110,7 @@
 
 <!--TODO: add required to each field after testing is completed -->
     <form action="createInvoice.php" method="post">
-
-        <div class="col-md-8 order-md-1">
+        <div class="col-md-8 order-md-1 mx-auto">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="reference">Load Number</label>
@@ -158,6 +169,7 @@
                         <input class="btn btn-primary" type="button" id="addNew" value="+">
                     </div>
                 </div>
+
             </div>
 
             <hr class="mb-4">

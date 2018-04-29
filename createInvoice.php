@@ -2,31 +2,53 @@
 require_once('config.php');
 $db= $config['dbInfo'];
 
+
 $conn = mysqli_connect($db['host'], $db['user'], $db['pass']);
-if($conn){
+if ($conn) {
     mysqli_select_db($conn, $db['database']);
 } else {
     die("Server not connected");
 }
 
+if(isset($_POST['submit'])) {
+    $sql = "INSERT INTO invoices (reference_number, shipped_from_city, shipped_from_state, shipped_to_city, shipped_to_state, amount) VALUES (?,?,?,?,?,?)";
 
-$sql = "INSERT INTO Invoices (reference_number, shipped_from_city, shipped_from_state, shipped_to_city, shipped_to_state, amount) VALUES (?,?,?,?,?,?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    $stmt->bind_param("sssssd", $_POST['reference'], $_POST['fromCity'], $_POST['fromState'], $_POST['toCity'], $_POST['toState'], $_POST['amount']);
+    $stmt->execute();
 
-$stmt = mysqli_prepare($conn, $sql);
-$stmt->bind_param("sssssd",$_POST['reference'],$_POST['fromCity'],$_POST['fromState'],$_POST['toCity'],$_POST['toState'],$_POST['amount']);
-$stmt->execute();
-
-$invoiceId = mysqli_insert_id($conn);
-$result = $conn->query("SELECT creation_time FROM invoices WHERE invoice_id='$invoiceId'");
-$row = mysqli_fetch_row($result);
-$date = date_create($row[0]->creation_time);
-$stmt->close();
-
+    $invoiceId = mysqli_insert_id($conn);
+    $result = $conn->query("SELECT creation_time FROM invoices WHERE invoice_id='$invoiceId'");
+    $row = mysqli_fetch_row($result);
+    $date = date_create($row[0]->creation_time);
+    $stmt->close();
+}
 if($_POST['brokerId'] == null){
-    //echo "ADRIAN";
+    try{
+        if(!$_POST['brokerName']){//TODO: add the rest of the fields to check
+            throw new Exception("Broker was not filled in.");
+        }
+        if($_POST['brokerViaEmail'] == 'Yes'){
+            $viaEmail = true;
+        } else{
+            $viaEmail = false;
+        }
+
+        $sql = "INSERT INTO broker (company_name, address, city, state, email, bill_via_email) VALUES (?,?,?,?,?,?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        $stmt->bind_param("sssssb",$_POST['brokerName'], $_POST['brokerAddress'], $_POST['brokerCity'], $_POST['brokerState'], $_POST['brokerEmail'], $viaEmail);
+        $stmt->execute();
+        $stmt->close();
+
+        $brokerName = $_POST['brokerName'];
+        $brokerResult = $conn->query("SELECT * FROM broker WHERE company_name='$brokerName'");
+
+    }catch(Exception $e){//TODO: add zip code?
+
+    }
 }else {
     $brokerName = $_POST['brokerId'];
-    $result = $conn->query("SELECT * FROM broker WHERE company_name='$brokerName'");
+    $brokerResult = $conn->query("SELECT * FROM broker WHERE company_name='$brokerName'");
 }
 
 /*
@@ -70,7 +92,7 @@ $conn->close();
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="home.html">Kali Enterprises Inc</a>
+            <a class="navbar-brand" href="index.php">Kali Enterprises Inc</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -141,6 +163,21 @@ $conn->close();
         <h4>Shipped To:</h4>
         <?php
             echo strtoupper($_POST['toCity']) . ", " . strtoupper($_POST['toState']);
+        ?>
+
+        <br><br>
+
+        <h4>Bill To:</h4>
+        <?php
+            while($row = $brokerResult->fetch_array()){
+                echo '<strong>' . strtoupper($row['company_name']) . '</strong>' . '<br>';
+                if($row['bill_via_email'] == true) {
+                    echo strtoupper($row['address']) . '<br>';
+                    echo strtoupper($row['city']) . ',' . strtoupper($row['state']) . ' ' . strtoupper($row['zip_code']);
+                } else {
+                    echo strtoupper($row['email']);
+                }
+            }
         ?>
 
         <br><br><br>
