@@ -20,6 +20,9 @@ if($conn){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function(e){
 
@@ -27,10 +30,36 @@ if($conn){
                 $(this).css("cursor", "pointer");
             });
             //
-            $("#tblDatatr:has(td)").click(function(e) {
+            /*$("#tblDatatr:has(tr):has(td)").click(function(e) {
                 var clickedCell= $(e.target).closest("td");
                 $("#something").html(clickedCell.text());
-            });
+                $(location).attr('href','createInvoice.html');
+            });*/
+
+            $('#tblDatatr').DataTable( {
+                "order": [[ 3, "desc" ]],
+                stateSave: true,
+                columnDefs: [ {
+                    targets: [ 0 ],
+                    orderData: [ 0, 1 ]
+                }, {
+                    targets: [ 1 ],
+                    orderData: [ 1, 0 ]
+                }, {
+                    targets: [ 4 ],
+                    orderData: [ 4, 0 ]
+                } ]
+                /*columnDefs: [ {
+                    targets: [ 0 ],
+                    orderData: [ 0, 1 ]
+                }, {
+                    targets: [ 1 ],
+                    orderData: [ 1, 0 ]
+                }, {
+                    targets: [ 4 ],
+                    orderData: [ 4, 0 ]
+                } ]*/
+            } );
         });
 
     </script>
@@ -39,7 +68,7 @@ if($conn){
 <br>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="home.html">Kali Enterprises Inc</a>
+        <a class="navbar-brand" href="index.php">Kali Enterprises Inc</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -47,7 +76,7 @@ if($conn){
         <div class="navbar-collapse collapse show" id="navbarColor02" style="">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="createInvoice.html">Create Invoice</a>
@@ -77,6 +106,7 @@ if($conn){
             <th>Shipped To</th>
             <th>Amount</th>
             <th>Date</th>
+            <th>Paid</th>
         </tr>
         </thead>
         <tbody>
@@ -101,13 +131,16 @@ if($conn){
                 echo $row['amount'];
                 echo "</td><td>";
                 echo date_format($date, 'm-d-Y');
+                echo "</td><td>";
+                $id = settype(row['invoice_id'],"string");
+                echo "<buttontype=\"button\" class=\"btn btn-primary\" value=$id>Paid</button>";
                 echo "</td></tr>";
 
             }
             $result->close();
         }
         ?>
-        <tr>
+        <!--<tr>
             <td>0001</td>
             <td>TQL</td>
             <td>$1,200</td>
@@ -130,7 +163,7 @@ if($conn){
             <td>Broker Logistics</td>
             <td>$2,000</td>
             <td>2/1/2018</td>
-        </tr>
+        </tr>-->
         </tbody>
     </table>
     <p id="something"></p>
