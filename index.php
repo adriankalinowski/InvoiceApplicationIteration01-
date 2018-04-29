@@ -60,8 +60,18 @@ if($conn){
                     orderData: [ 4, 0 ]
                 } ]*/
             } );
+
+            $('#invoiceRow').click(function() {
+                alert($(this).val());
+            });
         });
 
+    </script>
+    <script>
+        function myFunction(val) {
+
+            alert();
+        }
     </script>
 </head>
 <body>
@@ -88,8 +98,8 @@ if($conn){
                     <a class="nav-link" href="#">Page 3</a>
                 </li>
             </ul>
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline" action="viewInvoice.php" method="post">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchId" name="searchId">
                 <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -106,7 +116,7 @@ if($conn){
             <th>Shipped To</th>
             <th>Amount</th>
             <th>Date</th>
-            <th>Paid</th>
+            <!--<th>Paid</th>-->
         </tr>
         </thead>
         <tbody>
@@ -119,7 +129,13 @@ if($conn){
             while ($row = $result->fetch_array()) {
                 $date = date_create($row['creation_time']);
 
-                echo "<tr><td>";
+                if($row['paid_time'] != null){
+                    echo "<tr class=\"table-success\">";
+                }
+                else{
+                    echo "<tr>";
+                }
+                echo "<td>";
                 echo sprintf("%'.05d\n", $row['invoice_id']);
                 echo "</td><td>";
                 echo $row['reference_number'];
@@ -131,9 +147,9 @@ if($conn){
                 echo $row['amount'];
                 echo "</td><td>";
                 echo date_format($date, 'm-d-Y');
-                echo "</td><td>";
-                $id = settype(row['invoice_id'],"string");
-                echo "<buttontype=\"button\" class=\"btn btn-primary\" value=$id>Paid</button>";
+                //echo "</td><td>";
+                //$invoice_id = $row['invoice_id'];
+                //echo "<buttontype=\"button\" class=\"btn btn-primary\" onclick=\"myFunction($invoice_id)\")>Paid</button>";
                 echo "</td></tr>";
 
             }
