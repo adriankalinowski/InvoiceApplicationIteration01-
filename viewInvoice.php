@@ -24,20 +24,28 @@ $result = $conn->query("SELECT paid_time FROM invoices WHERE invoice_id='$invoic
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script>
         $(document).ready(function(e){
 
             $('#markPaid').click(function (e) {
-
+                var value = $(this).val();
                 $.ajax({
                     url: "markInvoicePaid.php",
-                    data:{invoiceId:$(this).val()},
+                    data:{invoiceId: value},
                     dataType:'json',
+                    success: function(data) {
+                        $("#buttonForPaid").remove();
+                        $("#paid2").append("<h2 class='float-right'>Invoice has been paid.</h2>");
+                    },
+                    error: function(data) {
+                        successmessage = 'Error';
+                        $("#paid2").text(successmessage);
+                        $("#paid2").append($(this).val());
+                    },
                 });
                 //$("#buttonForPaid").remove();
-                $("#paid1").remove();
-                $("#paid2").remove();
-                $("#isPaid").append("<div class='row'><h2 class='mx-auto'>Invoice has been paid.</h2></div>");
+
             });
 
         });
@@ -78,7 +86,7 @@ $result = $conn->query("SELECT paid_time FROM invoices WHERE invoice_id='$invoic
 
     <br>
 
-    <div class="row pb-2 mt-4 mb-2 border-bottom" id="isPaid">
+    <div class="row pb-2 mt-4 mb-2 border-bottom mx-auto" id="isPaid">
         <div class="col-md-8 mb-3" id="paid1">
 
         </div>
@@ -88,17 +96,21 @@ $result = $conn->query("SELECT paid_time FROM invoices WHERE invoice_id='$invoic
                 echo "INVOICE NOT FOUND";
             }
             else {
-                if($row=mysqli_fetch_row($result))
+                if($row=mysqli_fetch_row($result)){
+                    echo $invoiceId;
                     if($row[0] == null){
-                        echo "<form class=\"form-inline text-right\" method=\"post\" id=\"buttonForPaid\">" . "<button type=\"button\" class=\"btn btn-danger\" id=\"markPaid\" value=\"<?php echo $invoiceId ?>\">Mark as Paid</button>" . "</form>";
+                        /*echo "<form class=\"form-inline float-right\" method=\"post\" id=\"buttonForPaid\">" . "<button type=\"button\" class=\"btn btn-danger\" id=\"markPaid\" value=\" . $invoiceId  . \">Mark as Paid</button>" . "</form>";*/
                     }
                     else {
                         echo "<div class='row'><h2 class='mx-auto'>Invoice has been paid.</h2></div>";
                     }
-
+                }
             }
             $result->close();
             ?>
+            <form class="form-inline float-right" method="post" id="buttonForPaid">
+                <button type="button" class="btn btn-danger" id="markPaid" value="<?php echo $invoiceId; ?>">Mark as Paid</button>
+            </form>
         </div>
     </div>
 

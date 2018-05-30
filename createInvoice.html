@@ -39,9 +39,15 @@
                   '</div>' +
                   '<div class="row">' +
                   ' <div class="col-md-6 mb-3">' +
+                  '     <label for="brokerZipCode">Zip Code</label>' +
+                  '     <input type="number" class="form-control" id="brokerZipCode" name="brokerZipCode" placeholder="" value="" required>' +
+                  ' </div>' +
+                  ' <div class="col-md-6 mb-3">' +
                   '     <label for="brokerEmail">Email</label>' +
                   '     <input type="text" class="form-control" id="brokerEmail" name="brokerEmail" placeholder="" value="" required>' +
                   ' </div>' +
+                  '</div>' +
+                  '<div class="row">' +
                   ' <div class="col-md-6 mb-3">' +
                   '     <label for="brokerState">Bill via Email?</label>' +
                   '     <select class="custom-select d-block w-100" onchange="myFunction(this.value)" id="brokerViaEmail" name="brokerViaEmail" required>' +
@@ -70,7 +76,7 @@
       <script>
           function myFunction(val) {
               //alert(val);
-              document.getElementById("brokerAddition").innerText = "Hello";
+              //document.getElementById("brokerAddition").innerText = "Hello";
           }
       </script>
 
@@ -182,7 +188,7 @@
             </div>
 
             <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" id="submit" name="submit">Submit</button>
             <br><br>
         </div>
 

@@ -15,13 +15,24 @@ if(isset($_POST['submit'])) {
 
     $stmt = mysqli_prepare($conn, $sql);
     $stmt->bind_param("sssssd", $_POST['reference'], $_POST['fromCity'], $_POST['fromState'], $_POST['toCity'], $_POST['toState'], $_POST['amount']);
-    $stmt->execute();
+    //this checks if the query executed correctly.
+    if($stmt->execute()){
+        //echo "SUCCESS";
+    } else {
+        echo "FAILED";
+    }
 
     $invoiceId = mysqli_insert_id($conn);
     $result = $conn->query("SELECT creation_time FROM invoices WHERE invoice_id='$invoiceId'");
     $row = mysqli_fetch_row($result);
     $date = date_create($row[0]->creation_time);
     $stmt->close();
+    //unset($_POST['submit']);
+}else{
+    //This was to test whether it was entering the if statement.
+    //It is not entering bc of the submit post....
+    //will need to some how incorporate the if statement so if error occurs, then nothing should show...
+    echo "DID NOT ENTER!";
 }
 if($_POST['brokerId'] == null){
     try{
@@ -34,9 +45,9 @@ if($_POST['brokerId'] == null){
             $viaEmail = false;
         }
 
-        $sql = "INSERT INTO broker (company_name, address, city, state, email, bill_via_email) VALUES (?,?,?,?,?,?)";
+        $sql = "INSERT INTO broker (company_name, address, city, state, zip_code, email, bill_via_email) VALUES (?,?,?,?,?,?,?)";
         $stmt = mysqli_prepare($conn, $sql);
-        $stmt->bind_param("sssssb",$_POST['brokerName'], $_POST['brokerAddress'], $_POST['brokerCity'], $_POST['brokerState'], $_POST['brokerEmail'], $viaEmail);
+        $stmt->bind_param("ssssisb",$_POST['brokerName'], $_POST['brokerAddress'], $_POST['brokerCity'], $_POST['brokerState'], $_POST['brokerZipCode'], $_POST['brokerEmail'], $viaEmail);
         $stmt->execute();
         $stmt->close();
 
@@ -171,9 +182,9 @@ $conn->close();
         <?php
             while($row = $brokerResult->fetch_array()){
                 echo '<strong>' . strtoupper($row['company_name']) . '</strong>' . '<br>';
-                if($row['bill_via_email'] == true) {
+                if($row['bill_via_email'] == false) {
                     echo strtoupper($row['address']) . '<br>';
-                    echo strtoupper($row['city']) . ',' . strtoupper($row['state']) . ' ' . strtoupper($row['zip_code']);
+                    echo strtoupper($row['city']) . ', ' . strtoupper($row['state']) . ' ' . strtoupper($row['zip_code']);
                 } else {
                     echo strtoupper($row['email']);
                 }
