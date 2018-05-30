@@ -10,7 +10,7 @@ if($conn){
 }
 //TODO: Do i still need this?
 $invoiceId = (int)$_POST['searchId'];
-$result = $conn->query("SELECT paid_time FROM invoices WHERE invoice_id='$invoiceId'");
+$result = $conn->query("SELECT * FROM invoices WHERE invoice_id=$invoiceId");
 
 ?>
 
@@ -96,9 +96,9 @@ $result = $conn->query("SELECT paid_time FROM invoices WHERE invoice_id='$invoic
                 echo "INVOICE NOT FOUND";
             }
             else {
-                if($row=mysqli_fetch_row($result)){
+                if($row=mysqli_fetch_array($result)){
                     echo $invoiceId;
-                    if($row[0] == null){
+                    if($row['paid_time'] == null){
                         /*echo "<form class=\"form-inline float-right\" method=\"post\" id=\"buttonForPaid\">" . "<button type=\"button\" class=\"btn btn-danger\" id=\"markPaid\" value=\" . $invoiceId  . \">Mark as Paid</button>" . "</form>";*/
                     }
                     else {
@@ -138,27 +138,45 @@ $result = $conn->query("SELECT paid_time FROM invoices WHERE invoice_id='$invoic
     <br>
     <h3>
         Reference #:
+        <?php echo $row['invoice_id'] ?>
     </h3>
 
     <br>
 
     <h4>Shipped From:</h4>
-
+    <?php
+        echo strtoupper($row['shipped_from_city']) . ', ' . strtoupper($row['shipped_from_state']);
+    ?>
 
     <br><br>
 
     <h4>Shipped To:</h4>
-
+    <?php
+    echo strtoupper($row['shipped_to_city']) . ', ' . strtoupper($row['shipped_to_state']);
+    ?>
 
     <br><br>
 
     <h4>Bill To:</h4>
+    <?php
+        //TODO: need to use a join query to grab the broker as well
+        /*echo '<strong>' . strtoupper($row['company_name']) . '</strong>' . '<br>';
+        if($row['bill_via_email'] == false) {
+            echo strtoupper($row['address']) . '<br>';
+            echo strtoupper($row['city']) . ', ' . strtoupper($row['state']) . ' ' . strtoupper($row['zip_code']);
+        } else {
+            echo strtoupper($row['email']);
+        }*/
+    ?>
 
 
     <br><br><br>
 
     <h4>
         Amount Due:
+        <?php
+            echo "$" . money_format('%i', $row['amount']);
+        ?>
     </h4>
 
     <br><br>
