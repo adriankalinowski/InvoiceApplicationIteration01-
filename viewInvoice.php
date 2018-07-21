@@ -97,9 +97,11 @@ $result = $conn->query("SELECT * FROM invoices WHERE invoice_id=$invoiceId");
             }
             else {
                 if($row=mysqli_fetch_array($result)){
-                    echo $invoiceId;
                     if($row['paid_time'] == null){
                         /*echo "<form class=\"form-inline float-right\" method=\"post\" id=\"buttonForPaid\">" . "<button type=\"button\" class=\"btn btn-danger\" id=\"markPaid\" value=\" . $invoiceId  . \">Mark as Paid</button>" . "</form>";*/
+                        echo "<form class=\"form-inline float-right\" method=\"post\" id=\"buttonForPaid\">";
+                        echo "<button type=\"button\" class=\"btn btn-danger\" id=\"markPaid\" value=$invoiceId>Mark as Paid</button>";
+                        echo "</form>";
                     }
                     else {
                         echo "<div class='row'><h2 class='mx-auto'>Invoice has been paid.</h2></div>";
@@ -108,9 +110,6 @@ $result = $conn->query("SELECT * FROM invoices WHERE invoice_id=$invoiceId");
             }
             $result->close();
             ?>
-            <form class="form-inline float-right" method="post" id="buttonForPaid">
-                <button type="button" class="btn btn-danger" id="markPaid" value="<?php echo $invoiceId; ?>">Mark as Paid</button>
-            </form>
         </div>
     </div>
 
