@@ -78,7 +78,7 @@ $result = $conn->query("SELECT * FROM invoices WHERE invoice_id=$invoiceId");
                 </li>
             </ul>
             <form class="form-inline" action="viewInvoice.php" method="post">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchId">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchId" name="searchId">
                 <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
